@@ -9,3 +9,7 @@
 html {
     scroll-behavior: smooth;
 }
+
+.text-sm {
+    font-size: 0.7rem;
+}

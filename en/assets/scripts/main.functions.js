@@ -23,7 +23,7 @@ $(function(){
         $masonryGrid = $('.masonry'),
         $window = $(window),
         $content = $body.find('.content'),
-        $topNav = $('<a href="#" id="to-top" class="anchor-link"><hr/><hr/></a>'),
+        $topNav = $('<a href="#header" id="to-top" class="anchor-link"><hr/><hr/></a>'),
         headerHeight = $body.find('header.header').height(),
         $anchorLink = $body.find('.anchor-link'),
         $anchorSection = $body.find('.anchor-section');
@@ -66,9 +66,31 @@ $(function(){
         // Set the isotope
         grid.isotope({
             itemSelector: '.grid-item',
-            columnWidth: '.grid-sizer'
+            columnWidth: '.grid-sizer',
+            hiddenStyle: {
+                opacity: 0
+            },
+            visibleStyle: {
+                opacity: 1,
+                transform: 'translateY(-20px)',
+                transition: 'opacity 0.4s'
+            }
         });
+        var gridItems = grid.find('.grid-item').slice(9);
 
+        grid.isotope( 'hideItemElements', gridItems );
+    });
+
+    $body.on('click touch', '.load-more-fabrics', function(e){
+        var button = $(this);
+        var targetGrid = button.attr('data-target');
+        var grid = $masonryGrid.filter('#'+targetGrid);
+        var gridItems = grid.find('.grid-item').slice(9);
+
+        grid.isotope( 'revealItemElements', gridItems );
+        animateItems();
+        button.hide();
+        grid.isotope('layout');
     });
 
     // Add filter functionality
@@ -80,22 +102,13 @@ $(function(){
         var el = $(this);
         var filters = el.attr('data-filter');
         var targetGrid = el.parents('.grid-filters').attr('data-target');
-        var offset = el.offset().top;
 
         el.addClass('active').parent().siblings().find('.filter').removeClass('active');
 
         $masonryGrid.filter('#'+targetGrid).isotope({
             filter : filters
         });
-
-        // TweenMax.to('html,body', 1.5, { scrollTo : { y : offset, autoKill : false }, ease: Quint.easeInOut, onComplete : function(){ 
-            
-        //     var scrollmem = $window.scrollTop(); // Fix for scrolling to anchor issue
-        //     $window.scrollTop(scrollmem);
-        //     $body.removeClass('scrolled-up');
-
-        // }});
-
+        el.closest('section').find('.load-more-fabrics').hide();
     });
 
     // Lets make filters mobile-friendly
@@ -114,29 +127,14 @@ $(function(){
     });
 
     $body.on('click touch', '.anchor-link', function(e){
-
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
         var anchor = $(this).attr('href');
         var offset = 0;
 
         $content.removeClass('faded');
 
-        if (anchor == '#')
-            offset = 0;
-        else
-            offset = $(anchor).offset().top;
-
-        TweenMax.to(window, 1.5, { scrollTo : { y : offset, autoKill : false }, ease: Quint.easeInOut, onComplete : function(){ 
-            
-            var scrollmem = $window.scrollTop(); // Fix for scrolling to anchor issue
-            window.location.hash = anchor;
-            $window.scrollTop(scrollmem);
-            $body.removeClass('scrolled-up');
-
-        }});
-
+        $(anchor).get(0).scroll();
+        window.location.hash = anchor;
+        $body.addClass('scrolled-up');
     });
 
     // Transitions 
@@ -155,10 +153,8 @@ $(function(){
             
             if(href !== '#'){
                 var $anchorSection = $($(this).attr('href'));
-                if($anchorSection.length > 0) {
                     $anchorSection.addClass('anchor-section');
                     $anchorSection.attr('data-pos', $anchorSection.offset().top);
-                }
             }
 
         });
@@ -166,37 +162,24 @@ $(function(){
         $anchorSection = $body.find('.anchor-section');
 
     }
-    
+    var fabricOffsets = 0;
+    function render(props) {
+        return function(tok, i) {
+            return (i % 2) ? props[tok] : tok;
+        };
+    }
+
     setAnchors();
 
-    var lastScrollTop = 0; 
-    var scrollTop = 0;
-
-    // On scroll
-    $window.on('scroll', function(){
-
-        scrollTop = $window.scrollTop();
-
-        if(scrollTop > 0)
-            $body.addClass('scrolled');
-        else
-            $body.removeClass('scrolled');
-
-        if(scrollTop < lastScrollTop)
-            $body.addClass('scrolled-up');
-        else
-            $body.removeClass('scrolled-up');
-
-        lastScrollTop = scrollTop;        
+    window.requestAnimationFrame(function(){
+        animateItems();
+        animateText();
+        nevoLightbox();
+        $masonryGrid.isotope('layout');
     });
-
-    $body.imagesLoaded(function(){
-        window.requestAnimationFrame(function(){
-            animateItems();
-            animateText();
-            nevoLightbox();
-            $masonryGrid.isotope('layout');
-        });
+       
+    $(document).on('lazyloaded', function(e){
+        $masonryGrid.isotope('layout');
     });
         
     $window.bind("pageshow", function(event) {

@@ -25,6 +25,7 @@ function isYoutube(url) {
       var $lightbox = $('<div id="lightbox"><div class="bg"><div class="loader"></div></div><div class="close-lightbox"></div><div class="prev-lightbox-item"></div><div class="next-lightbox-item"></div></div>');
       var curIndex;
       var curItem;
+      var curGallery;
       var galleryTotal;
       var mouseY;
       var mouseX;
@@ -59,9 +60,9 @@ function isYoutube(url) {
   
         curItem = this;
         curIndex = parseInt($(curItem).attr('data-index'));
-  
+        curGallery = $(this).closest('.gallery');
+
         galleryTotal = $(this).closest('.gallery').attr('data-total')-1;
-  
         initLightbox(curItem);
   
       });
@@ -106,9 +107,9 @@ function isYoutube(url) {
   
       }
   
-      function loadFirstItem(){
+      function loadFirstItem(el){
         var img = new Image();
-        img.src = $body.find('.lightbox[data-index="'+curIndex+'"]').attr('href');
+        img.src = $(curItem).attr('href');
   
         img.onload = function(e){
           
@@ -125,7 +126,7 @@ function isYoutube(url) {
       function loadNewItem(newIndex,direction){
   
         var img = new Image();
-        img.src = $body.find('.lightbox[data-index="'+newIndex+'"]').attr('href');
+        img.src = curGallery.find('.lightbox[data-index="'+newIndex+'"]').attr('href');
   
         var oldItem = curItem;
         initScale = .6;
@@ -167,7 +168,7 @@ function isYoutube(url) {
         $lightbox.show(0);
         $lightbox.find('.bg').fadeIn(500, function(){
           toPosition = 0, fromPosition = 0, initScale = .6;
-          loadFirstItem();
+          loadFirstItem(el);
         });
   
         // Close lightbox
