@@ -109,6 +109,7 @@ $(function(){
             filter : filters
         });
         el.closest('section').find('.load-more-fabrics').hide();
+        animateItems();
     });
 
     // Lets make filters mobile-friendly

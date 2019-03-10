@@ -461,9 +461,6 @@ table {
 }
 
 @media screen and (max-width: 1024px) and (min-width: 850px) {
-  .offset-1 {
-    margin-left: 0;
-  }
   .column-tablet-1 {
     width: 8.33333% !important;
   }
@@ -634,6 +631,7 @@ table {
   }
   .columns-5 .column, .column-5 {
     width: 100%;
+    margin-top: 2rem;
   }
   .column-mobile-5 {
     width: 41.66667% !important;
@@ -1035,7 +1033,7 @@ h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:la
 
 p {
   font-weight: 300;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   line-height: 1.6;
   margin: 1rem 0 2rem;
 }
@@ -1641,7 +1639,6 @@ a#to-top hr:last-child {
   }
   .thumb .caption {
     position: relative;
-    padding: 1rem 0 1rem;
   }
   .thumb .caption .title {
     color: #11608aff;
