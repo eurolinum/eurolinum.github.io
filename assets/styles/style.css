@@ -1465,8 +1465,8 @@ a#to-top hr {
   position: absolute;
   top: 10px;
   width: 20px;
-  border: 1px solid black;
-  background: black;
+  border: 1px solid #11608aff;
+  background: #11608aff;
 }
 
 a#to-top hr:first-child {
@@ -1890,16 +1890,6 @@ header.header a:after {
   transition: border-color .3s;
 }
 
-header.header > * {
-  flex: 1;
-}
-
-header.header > *:last-child {
-  justify-self: right;
-  justify-content: flex-end;
-  margin-right: 0rem;
-}
-
 .header-inverted:not(.scrolled) .wrapper.dropdown-hovered {
   background: #11608aff;
 }
@@ -1976,21 +1966,32 @@ header.header, .burger {
   .menu {
     list-style: none;
     display: flex;
-    margin: 0 -2rem;
-    padding: 0 2rem;
+    margin: 0 -1rem;
+    padding: 0 1rem;
     align-items: center;
     justify-content: center;
     font-family: "hk-nova", serif;
-    font-size: .8rem;
+    font-size: .75rem;
+  }
+  .menu-divider {
+    width: 1px;
+    height: 2rem;
+    background: #11608aff;
+    border: none;
   }
   .menu.main {
     align-self: center;
     line-height: 1.1;
+    flex: 3;
   }
   .menu.social {
     align-self: right;
     font-size: .6rem;
     line-height: 1.4;
+    flex: 0.7;
+  }
+  .menu.lang {
+    flex: 0.7;
   }
   .menu.social li:last-child a {
     margin-right: 0;
@@ -1999,7 +2000,7 @@ header.header, .burger {
     display: none;
   }
   .menu-link {
-    margin: 0 1rem;
+    margin: 0 .5rem;
     padding: .5rem 0;
     border-bottom: none;
     display: inline-block;
@@ -2014,6 +2015,9 @@ header.header, .burger {
     right: 100%;
     bottom: 0;
     border-bottom: 1px solid #11608aff;
+  }
+  .menu.main .menu-link {
+    margin: 0 1rem;
   }
   .menu-link:hover, .menu-link.active {
     color: #11608aff;
@@ -2237,6 +2241,9 @@ header.header, .burger {
   .menu.social .menu-item a {
     color: white;
   }
+  hr.menu-divider {
+    display: none;
+  }
   body.menu-opened {
     overflow: hidden;
   }
@@ -2249,9 +2256,6 @@ header.header, .burger {
     opacity: 1;
     display: block;
     transform: translateY(0);
-  }
-  body.menu-opened .menu:last-child {
-    padding-bottom: 7.5rem;
   }
   body.menu-opened .burger {
     margin: 2.25rem 1.35rem;
